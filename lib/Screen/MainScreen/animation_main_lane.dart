@@ -73,7 +73,7 @@ class _AnimatedColorState extends State<AnimatedColor>
             ),
           ),
         ),
-        Padding(padding: EdgeInsets.only(right: widget.width * 0.42)/2),
+        Padding(padding: EdgeInsets.only(right: widget.width * 0.23)),
         Transform.rotate(
           angle: -0.29,
           alignment: Alignment.topCenter
@@ -107,7 +107,7 @@ class _AnimatedColorState extends State<AnimatedColor>
           .timeout(Duration(milliseconds: 2000),
               onTimeout: () => {
                     _colorAnimationController.reset(),
-                    _active ++ ,
+                    //_active ++ ,
                     _onTap(),
                   });
     }else{
