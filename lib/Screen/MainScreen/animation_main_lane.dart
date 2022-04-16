@@ -107,7 +107,7 @@ class _AnimatedColorState extends State<AnimatedColor>
           .timeout(Duration(milliseconds: 2000),
               onTimeout: () => {
                     _colorAnimationController.reset(),
-                    //_active ++ ,
+                    _active ++ ,
                     _onTap(),
                   });
     }else{
