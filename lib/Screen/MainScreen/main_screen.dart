@@ -1,8 +1,13 @@
 import 'package:car_drive_animation/Basic/colors.dart';
 import 'package:car_drive_animation/Basic/images.dart';
+import 'package:car_drive_animation/Provider/main_sceen_animation.dart';
+import 'package:car_drive_animation/Screen/MainScreen/animation_main_break.dart';
+import 'package:car_drive_animation/Screen/MainScreen/animation_main_green.dart';
+import 'package:car_drive_animation/Screen/MainScreen/animation_main_lane.dart';
 import 'package:car_drive_animation/Screen/MainScreen/clock_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -30,10 +35,8 @@ class MainScreenState extends State<MainScreen> {
               ClockTimer(width, heigth),
               Padding(padding: EdgeInsets.only(top: heigth * 0.068)),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                // ignore: prefer_const_literals_to_create_immutables
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Padding(padding: EdgeInsets.only(left: width * 0.072)),
                   Container(
                       width: width * 0.216,
                       child: Text(
@@ -62,14 +65,12 @@ class MainScreenState extends State<MainScreen> {
                           color: Colors_MainScreen.baseColorText,
                         ),
                       )),
-                  Padding(padding: EdgeInsets.only(right: width * 0.072)),
                 ],
               ),
               Padding(padding: EdgeInsets.only(top: heigth * 0.075)),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Padding(padding: EdgeInsets.only(left: width * 0.107)),
                   Switch(
                     value: isSwitched,
                     onChanged: (value) {
@@ -80,7 +81,6 @@ class MainScreenState extends State<MainScreen> {
                     activeTrackColor: Colors.lightGreenAccent,
                     activeColor: Colors.green,
                   ),
-                  Padding(padding: EdgeInsets.only(right: width * 0.077)),
                   Column(
                     children: [
                       Container(
@@ -109,11 +109,69 @@ class MainScreenState extends State<MainScreen> {
                               color: Colors_MainScreen.colorSpeedText,
                             ),
                           )),
-                      SvgPicture.asset(
-                        Images_MainScreen.stopSign,
-                      ),
                     ],
                   ),
+                  SvgPicture.asset(
+                    Images_MainScreen.stopSign,
+                    width: width * 0.218,
+                    height: heigth * 0.109,
+                  ),
+                ],
+              ),
+              Padding(padding: EdgeInsets.only(top: heigth * 0.029)),
+              Stack(
+                children: [
+                  Center(child: AnimationMainLane(width, heigth)),
+                  Stack(children: [
+                    Center(
+                      child: SvgPicture.asset(
+                        Images_MainScreen.road,
+                        width: width * 0.591,
+                        height: heigth * 0.312,
+                      ),
+                    ),
+                    Center(
+                      child: context.watch<AnimationMainScreen>().isGreen
+                          ? Padding(
+                              padding: EdgeInsets.only(top: heigth * 0.06),
+                              child: Container(
+                                width: width * 0.09,
+                                height: heigth * 0.25,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.white),
+                                  color: Colors_MainScreen.colorAnimationGreen,
+                                ),
+                              ),
+                            )
+                          : SizedBox(
+                              width: width * 0.394,
+                              height: heigth * 0.06,
+                            ),
+                    ),
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          SvgPicture.asset(
+                            Images_MainScreen.carModelDarkSmall,
+                            width: width * 0.304,
+                            height: heigth * 0.104,
+                          ),
+                          context.watch<AnimationMainScreen>().isBreak
+                              ? AnimationMainBreak(width, heigth)
+                              : SizedBox(
+                                  width: width * 0.394,
+                                  height: heigth * 0.06,
+                                ),
+                          SvgPicture.asset(
+                            Images_MainScreen.carModelLightLarg,
+                            width: width * 0.669,
+                            height: heigth * 0.228,
+                          ),
+                        ],
+                      ),
+                    )
+                  ]),
                 ],
               ),
             ],
