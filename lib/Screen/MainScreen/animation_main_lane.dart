@@ -49,7 +49,7 @@ class _AnimatedColorState extends State<AnimatedColor>
       begin: context.read<AnimationMainScreen>().isLightMode
           ? Colors.white
           : Colors.black,
-      end: Colors_MainScreen.colorAnimationBreak.withOpacity(0.05),
+      end: Colors.red.withOpacity(0.02),
     ).animate(_colorAnimationController)
       ..addListener(() {
         setState(() {});
@@ -64,11 +64,11 @@ class _AnimatedColorState extends State<AnimatedColor>
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Padding(padding: EdgeInsets.only(left: widget.width * 0.3341)),
+        Padding(padding: EdgeInsets.only(left: widget.width * 0.3340)),
         Transform.rotate(
           angle: 0.29,
           child: Container(
-            width: widget.width * 0.035,
+            width: widget.width * 0.05,
             height: widget.heigth * 0.33,
             decoration: BoxDecoration(
               border: Border.all(
@@ -89,11 +89,11 @@ class _AnimatedColorState extends State<AnimatedColor>
             ),
           ),
         ),
-        Padding(padding: EdgeInsets.only(left: widget.width * 0.2618)),
+        Padding(padding: EdgeInsets.only(left: widget.width * 0.232)),
         Transform.rotate(
           angle: -0.29,
           child: Container(
-            width: widget.width * 0.035,
+            width: widget.width * 0.05,
             height: widget.heigth * 0.33,
             decoration: BoxDecoration(
               border: Border.all(
@@ -114,7 +114,7 @@ class _AnimatedColorState extends State<AnimatedColor>
             ),
           ),
         ),
-        Padding(padding: EdgeInsets.only(right: widget.width * 0.3341)),
+        Padding(padding: EdgeInsets.only(right: widget.width * 0.3340)),
       ],
     );
   }

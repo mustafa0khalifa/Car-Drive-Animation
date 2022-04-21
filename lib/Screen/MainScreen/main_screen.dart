@@ -25,7 +25,7 @@ class MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double heigth = MediaQuery.of(context).size.height;
-    if (Theme.of(context).brightness == Brightness.light) {
+    if (Theme.of(context).brightness != Brightness.light) {
       context.read<AnimationMainScreen>().changeToLigthMode();
     } else {
       context.read<AnimationMainScreen>().changeToBlackMode();
@@ -157,7 +157,6 @@ class MainScreenState extends State<MainScreen> {
                             width: width * 0.09,
                             height: heigth * 0.25,
                             decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white),
                               color: Colors_MainScreen.colorAnimationGreen,
                             ),
                           ),
