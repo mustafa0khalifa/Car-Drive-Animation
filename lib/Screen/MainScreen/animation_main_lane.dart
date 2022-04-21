@@ -26,6 +26,7 @@ class _AnimatedColorState extends State<AnimatedColor>
     with TickerProviderStateMixin {
   late AnimationController _colorAnimationController;
   late Animation _redColorAnimation;
+  late Animation _redColorAnimation2;
   late int _active = 0;
 
   @override
@@ -33,14 +34,22 @@ class _AnimatedColorState extends State<AnimatedColor>
     _colorAnimationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 1500),
-      reverseDuration: Duration(milliseconds: 1500),
+      reverseDuration: Duration(milliseconds: 200),
     );
     _redColorAnimation = ColorTween(
       begin: context.read<AnimationMainScreen>().isLightMode
           ? Colors.white
           : Colors.black,
       end: Colors_MainScreen.colorAnimationBreak.withOpacity(0.8),
-      
+    ).animate(_colorAnimationController)
+      ..addListener(() {
+        setState(() {});
+      });
+    _redColorAnimation2 = ColorTween(
+      begin: context.read<AnimationMainScreen>().isLightMode
+          ? Colors.white
+          : Colors.black,
+      end: Colors_MainScreen.colorAnimationBreak.withOpacity(0.05),
     ).animate(_colorAnimationController)
       ..addListener(() {
         setState(() {});
@@ -70,13 +79,12 @@ class _AnimatedColorState extends State<AnimatedColor>
               color: _redColorAnimation.value,
               gradient: LinearGradient(
                 colors: [
-                  context.read<AnimationMainScreen>().isLightMode
-                      ? Colors.white
-                      : Colors.black,
+                  _redColorAnimation2.value,
                   _redColorAnimation.value,
+                  _redColorAnimation2.value,
                 ],
-                begin: Alignment.centerRight,
-                end: Alignment.centerLeft,
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
               ),
             ),
           ),
@@ -96,13 +104,12 @@ class _AnimatedColorState extends State<AnimatedColor>
               color: _redColorAnimation.value,
               gradient: LinearGradient(
                 colors: [
-                  context.read<AnimationMainScreen>().isLightMode
-                      ? Colors.white
-                      : Colors.black,
+                   _redColorAnimation2.value,
                   _redColorAnimation.value,
+                  _redColorAnimation2.value,
                 ],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
               ),
             ),
           ),

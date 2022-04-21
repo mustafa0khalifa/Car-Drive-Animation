@@ -25,7 +25,7 @@ class MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double heigth = MediaQuery.of(context).size.height;
-    if (Theme.of(context).brightness != Brightness.light) {
+    if (Theme.of(context).brightness == Brightness.light) {
       context.read<AnimationMainScreen>().changeToLigthMode();
     } else {
       context.read<AnimationMainScreen>().changeToBlackMode();
@@ -137,13 +137,17 @@ class MainScreenState extends State<MainScreen> {
                   ),
                 ],
               ),
-              Padding(padding: EdgeInsets.only(top: heigth * 0.029)),
-              Stack(children: [
+              Stack(alignment: Alignment.topCenter, children: [
                 context.watch<AnimationMainScreen>().isLane
-                    ? Center(child: AnimationMainLane(width, heigth))
+                    ? Center(
+                        child: Padding(
+                            padding: EdgeInsets.only(top: heigth * 0.07),
+                            child: AnimationMainLane(width, heigth)))
                     : SizedBox(),
                 Center(
-                  child: RoadMainLane(width,heigth),
+                  child: Padding(
+                      padding: EdgeInsets.only(top: heigth * 0.07),
+                      child: RoadMainLane(width, heigth)),
                 ),
                 Center(
                   child: context.watch<AnimationMainScreen>().isGreen
@@ -164,30 +168,30 @@ class MainScreenState extends State<MainScreen> {
                         ),
                 ),
                 Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  child: Stack(
+                    alignment: Alignment.topCenter,
                     children: [
-                      Stack(
-                        alignment: Alignment.topCenter,
-                        children: [
-                          SvgPicture.asset(
-                            Images_MainScreen.carModelDarkSmall,
-                            width: width * 0.4377,
-                            height: heigth * 0.149,
-                          ),
-                          context.watch<AnimationMainScreen>().isBreak
-                              ? AnimationMainBreak(width, heigth)
-                              : SizedBox(
-                                  width: width * 0.3,
-                                  height: heigth * 0.205,
-                                ),
-                        ],
-                      ),
                       SvgPicture.asset(
-                        Images_MainScreen.carModelLightLarg,
-                        width: width * 0.669,
-                        height: heigth * 0.228,
+                        Images_MainScreen.carModelDarkSmall,
+                        width: width * 0.4377,
+                        height: heigth * 0.149,
                       ),
+                      context.watch<AnimationMainScreen>().isBreak
+                          ? AnimationMainBreak(width, heigth)
+                          : SizedBox(
+                              width: width * 0.3,
+                              height: heigth * 0.205,
+                            ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: heigth * 0.205,
+                        ),
+                        child: SvgPicture.asset(
+                          Images_MainScreen.carModelLightLarg,
+                          width: width * 0.669,
+                          height: heigth * 0.228,
+                        ),
+                      )
                     ],
                   ),
                 )

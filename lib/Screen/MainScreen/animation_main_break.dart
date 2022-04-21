@@ -26,6 +26,7 @@ class _AnimatedColorState extends State<AnimatedColor>
     with TickerProviderStateMixin {
   late AnimationController _colorAnimationController;
   late Animation _redColorAnimation;
+  late Animation _redColorAnimation2;
   late int _active = 0;
 
   @override
@@ -33,13 +34,22 @@ class _AnimatedColorState extends State<AnimatedColor>
     _colorAnimationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 1500),
-      reverseDuration: Duration(milliseconds: 1500),
+      reverseDuration: Duration(milliseconds: 200),
     );
     _redColorAnimation = ColorTween(
       begin: context.read<AnimationMainScreen>().isLightMode
           ? Colors.white
           : Colors.black,
-      end: Colors_MainScreen.colorAnimationBreak.withOpacity(0.5),
+      end: Colors_MainScreen.colorAnimationBreak.withOpacity(0.8),
+    ).animate(_colorAnimationController)
+      ..addListener(() {
+        setState(() {});
+      });
+    _redColorAnimation2 = ColorTween(
+      begin: context.read<AnimationMainScreen>().isLightMode
+          ? Colors.white
+          : Colors.black,
+      end: Colors_MainScreen.colorAnimationBreak.withOpacity(0.05),
     ).animate(_colorAnimationController)
       ..addListener(() {
         setState(() {});
@@ -55,7 +65,7 @@ class _AnimatedColorState extends State<AnimatedColor>
       padding: EdgeInsets.only(top: widget.heigth * 0.125),
       child: Container(
         width: widget.width * 0.35,
-        height: widget.heigth * 0.08,
+        height: widget.heigth * 0.06,
         decoration: BoxDecoration(
           border: Border.all(
             color: context.read<AnimationMainScreen>().isLightMode
@@ -64,16 +74,13 @@ class _AnimatedColorState extends State<AnimatedColor>
           ),
           gradient: LinearGradient(
             colors: [
-              context.read<AnimationMainScreen>().isLightMode
-                  ? Colors.white
-                  : Colors.black,
               _redColorAnimation.value,
+              _redColorAnimation2.value,
             ],
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
         ),
-        transform: Matrix4.rotationX(0.90),
       ),
     );
   }
@@ -81,14 +88,14 @@ class _AnimatedColorState extends State<AnimatedColor>
   void _onTap() {
     if (_active < 3) {
       print('AnimationMainBreak');
-      _colorAnimationController
+       _colorAnimationController
           .repeat(reverse: true)
           .timeout(Duration(milliseconds: 2000),
               onTimeout: () => {
                     _colorAnimationController.reset(),
                     _active++,
                     _onTap(),
-                  });
+                  }); 
     } else {
       _colorAnimationController.reset();
       context.read<AnimationMainScreen>().changeToGreen();
