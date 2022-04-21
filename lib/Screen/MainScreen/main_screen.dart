@@ -5,8 +5,10 @@ import 'package:car_drive_animation/Screen/MainScreen/animation_main_break.dart'
 import 'package:car_drive_animation/Screen/MainScreen/animation_main_green.dart';
 import 'package:car_drive_animation/Screen/MainScreen/animation_main_lane.dart';
 import 'package:car_drive_animation/Screen/MainScreen/clock_timer.dart';
+import 'package:car_drive_animation/Screen/MainScreen/road.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
@@ -18,14 +20,22 @@ class MainScreen extends StatefulWidget {
 
 class MainScreenState extends State<MainScreen> {
   bool isSwitched = true;
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double heigth = MediaQuery.of(context).size.height;
-
+    if (Theme.of(context).brightness == Brightness.light) {
+      context.read<AnimationMainScreen>().changeToLigthMode();
+    } else {
+      context.read<AnimationMainScreen>().changeToBlackMode();
+    }
     return Container(
-      color: Colors_MainScreen.backColor,
+      color: Colors.black,
       child: Scaffold(
+        backgroundColor: context.read<AnimationMainScreen>().isLightMode
+            ? Colors_MainScreen.backColorLight
+            : Colors_MainScreen.backColorBlack,
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -62,7 +72,9 @@ class MainScreenState extends State<MainScreen> {
                           fontFamily: 'Montserrat',
                           fontSize: 24,
                           fontWeight: FontWeight.w700,
-                          color: Colors_MainScreen.baseColorText,
+                          color: context.read<AnimationMainScreen>().isLightMode
+                              ? Colors.black
+                              : Colors.white,
                         ),
                       )),
                 ],
@@ -71,15 +83,18 @@ class MainScreenState extends State<MainScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Switch(
+                  FlutterSwitch(
+                    width: width * 0.145,
+                    height: heigth * 0.044,
                     value: isSwitched,
-                    onChanged: (value) {
+                    activeColor: Colors.green,
+                    borderRadius: 30.0,
+                    showOnOff: false,
+                    onToggle: (val) {
                       setState(() {
-                        isSwitched = value;
+                        isSwitched = val;
                       });
                     },
-                    activeTrackColor: Colors.lightGreenAccent,
-                    activeColor: Colors.green,
                   ),
                   Column(
                     children: [
@@ -93,7 +108,11 @@ class MainScreenState extends State<MainScreen> {
                               fontFamily: 'Montserrat',
                               fontSize: 90,
                               fontWeight: FontWeight.w600,
-                              color: Colors_MainScreen.baseColorText,
+                              color: context
+                                      .read<AnimationMainScreen>()
+                                      .isLightMode
+                                  ? Colors_MainScreen.baseColorText
+                                  : Colors_MainScreen.colorKMSwap,
                             ),
                           )),
                       Container(
@@ -119,61 +138,60 @@ class MainScreenState extends State<MainScreen> {
                 ],
               ),
               Padding(padding: EdgeInsets.only(top: heigth * 0.029)),
-              Stack(
-                children: [
-                  Center(child: AnimationMainLane(width, heigth)),
-                  Stack(children: [
-                    Center(
-                      child: SvgPicture.asset(
-                        Images_MainScreen.road,
-                        width: width * 0.591,
-                        height: heigth * 0.312,
-                      ),
-                    ),
-                    Center(
-                      child: context.watch<AnimationMainScreen>().isGreen
-                          ? Padding(
-                              padding: EdgeInsets.only(top: heigth * 0.06),
-                              child: Container(
-                                width: width * 0.09,
-                                height: heigth * 0.25,
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.white),
-                                  color: Colors_MainScreen.colorAnimationGreen,
-                                ),
-                              ),
-                            )
-                          : SizedBox(
-                              width: width * 0.394,
-                              height: heigth * 0.06,
+              Stack(children: [
+                context.watch<AnimationMainScreen>().isLane
+                    ? Center(child: AnimationMainLane(width, heigth))
+                    : SizedBox(),
+                Center(
+                  child: RoadMainLane(width,heigth),
+                ),
+                Center(
+                  child: context.watch<AnimationMainScreen>().isGreen
+                      ? Padding(
+                          padding: EdgeInsets.only(top: heigth * 0.06),
+                          child: Container(
+                            width: width * 0.09,
+                            height: heigth * 0.25,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white),
+                              color: Colors_MainScreen.colorAnimationGreen,
                             ),
-                    ),
-                    Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          ),
+                        )
+                      : SizedBox(
+                          width: width * 0.394,
+                          height: heigth * 0.08,
+                        ),
+                ),
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Stack(
+                        alignment: Alignment.topCenter,
                         children: [
                           SvgPicture.asset(
                             Images_MainScreen.carModelDarkSmall,
-                            width: width * 0.304,
-                            height: heigth * 0.104,
+                            width: width * 0.4377,
+                            height: heigth * 0.149,
                           ),
                           context.watch<AnimationMainScreen>().isBreak
                               ? AnimationMainBreak(width, heigth)
                               : SizedBox(
-                                  width: width * 0.394,
-                                  height: heigth * 0.06,
+                                  width: width * 0.3,
+                                  height: heigth * 0.205,
                                 ),
-                          SvgPicture.asset(
-                            Images_MainScreen.carModelLightLarg,
-                            width: width * 0.669,
-                            height: heigth * 0.228,
-                          ),
                         ],
                       ),
-                    )
-                  ]),
-                ],
-              ),
+                      SvgPicture.asset(
+                        Images_MainScreen.carModelLightLarg,
+                        width: width * 0.669,
+                        height: heigth * 0.228,
+                      ),
+                    ],
+                  ),
+                )
+              ]),
             ],
           ),
         ),

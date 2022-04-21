@@ -36,8 +36,10 @@ class _AnimatedColorState extends State<AnimatedColor>
       reverseDuration: Duration(milliseconds: 1500),
     );
     _redColorAnimation = ColorTween(
-      begin: Colors.white70,
-      end: Colors_MainScreen.colorAnimationBreak,
+      begin: context.read<AnimationMainScreen>().isLightMode
+          ? Colors.white
+          : Colors.black,
+      end: Colors_MainScreen.colorAnimationBreak.withOpacity(0.5),
     ).animate(_colorAnimationController)
       ..addListener(() {
         setState(() {});
@@ -49,24 +51,32 @@ class _AnimatedColorState extends State<AnimatedColor>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: widget.width * 0.394,
-      height: widget.heigth * 0.06,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.white),
-        gradient: LinearGradient(
-          colors: [
-            Colors.white70,
-            _redColorAnimation.value,
-          ],
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
+    return Padding(
+      padding: EdgeInsets.only(top: widget.heigth * 0.125),
+      child: Container(
+        width: widget.width * 0.35,
+        height: widget.heigth * 0.08,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: context.read<AnimationMainScreen>().isLightMode
+                ? Colors.white
+                : Colors.black,
+          ),
+          gradient: LinearGradient(
+            colors: [
+              context.read<AnimationMainScreen>().isLightMode
+                  ? Colors.white
+                  : Colors.black,
+              _redColorAnimation.value,
+            ],
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+          ),
         ),
+        transform: Matrix4.rotationX(0.90),
       ),
-      transform: Matrix4.rotationX(0.25),
     );
   }
-
 
   void _onTap() {
     if (_active < 3) {
@@ -76,18 +86,15 @@ class _AnimatedColorState extends State<AnimatedColor>
           .timeout(Duration(milliseconds: 2000),
               onTimeout: () => {
                     _colorAnimationController.reset(),
-                    _active ++ ,
+                    _active++,
                     _onTap(),
                   });
-    }else{
+    } else {
       _colorAnimationController.reset();
       context.read<AnimationMainScreen>().changeToGreen();
-
     }
     // _active = !_active;
 
     //
   }
-
-
 }

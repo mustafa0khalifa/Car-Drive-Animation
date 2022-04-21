@@ -36,8 +36,11 @@ class _AnimatedColorState extends State<AnimatedColor>
       reverseDuration: Duration(milliseconds: 1500),
     );
     _redColorAnimation = ColorTween(
-      begin: Colors.white70,
-      end: Colors_MainScreen.colorAnimationBreak,
+      begin: context.read<AnimationMainScreen>().isLightMode
+          ? Colors.white
+          : Colors.black,
+      end: Colors_MainScreen.colorAnimationBreak.withOpacity(0.8),
+      
     ).animate(_colorAnimationController)
       ..addListener(() {
         setState(() {});
@@ -52,19 +55,24 @@ class _AnimatedColorState extends State<AnimatedColor>
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Padding(padding: EdgeInsets.only(left: widget.width * 0.25)),
+        Padding(padding: EdgeInsets.only(left: widget.width * 0.3341)),
         Transform.rotate(
           angle: 0.29,
-          alignment: Alignment.bottomRight,
           child: Container(
-            width: 25,
-            height: widget.heigth * 0.3,
+            width: widget.width * 0.035,
+            height: widget.heigth * 0.33,
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.white),
+              border: Border.all(
+                color: context.read<AnimationMainScreen>().isLightMode
+                    ? Colors.white
+                    : Colors.black,
+              ),
               color: _redColorAnimation.value,
               gradient: LinearGradient(
                 colors: [
-                  Colors.white70,
+                  context.read<AnimationMainScreen>().isLightMode
+                      ? Colors.white
+                      : Colors.black,
                   _redColorAnimation.value,
                 ],
                 begin: Alignment.centerRight,
@@ -73,20 +81,24 @@ class _AnimatedColorState extends State<AnimatedColor>
             ),
           ),
         ),
-        Padding(padding: EdgeInsets.only(right: widget.width * 0.23)),
+        Padding(padding: EdgeInsets.only(left: widget.width * 0.2618)),
         Transform.rotate(
           angle: -0.29,
-          alignment: Alignment.topCenter
-          ,
           child: Container(
-            width: widget.width * 0.06,
-            height: widget.heigth * 0.3,
+            width: widget.width * 0.035,
+            height: widget.heigth * 0.33,
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.white),
+              border: Border.all(
+                color: context.read<AnimationMainScreen>().isLightMode
+                    ? Colors.white
+                    : Colors.black,
+              ),
               color: _redColorAnimation.value,
               gradient: LinearGradient(
                 colors: [
-                  Colors.white70,
+                  context.read<AnimationMainScreen>().isLightMode
+                      ? Colors.white
+                      : Colors.black,
                   _redColorAnimation.value,
                 ],
                 begin: Alignment.centerLeft,
@@ -95,10 +107,11 @@ class _AnimatedColorState extends State<AnimatedColor>
             ),
           ),
         ),
-        
+        Padding(padding: EdgeInsets.only(right: widget.width * 0.3341)),
       ],
     );
   }
+
   void _onTap() {
     if (_active < 3) {
       print('AnimationMainLane');
@@ -110,16 +123,12 @@ class _AnimatedColorState extends State<AnimatedColor>
                     _active ++ ,
                     _onTap(),
                   });
-    }else{
+    } else {
       _colorAnimationController.reset();
       context.read<AnimationMainScreen>().changeToBreak();
-
     }
     // _active = !_active;
 
     //
   }
-
- 
-
 }

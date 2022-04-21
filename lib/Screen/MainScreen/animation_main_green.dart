@@ -37,7 +37,7 @@ class _AnimatedColorState extends State<AnimatedColor>
     );
     _redColorAnimation = ColorTween(
        begin: Colors.white70,
-      end: Colors_MainScreen.colorAnimationGreen,
+      end: Colors_MainScreen.colorKMSwap,
     ).animate(_colorAnimationController)
       ..addListener(() {
         setState(() {});

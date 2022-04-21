@@ -4,11 +4,13 @@ class AnimationMainScreen extends ChangeNotifier{
   bool _isLane = true;
   bool _isBreak = false;
   bool _isGreen = false;
+  bool _isLightMode = true;
 
 
   bool get isLane => _isLane;
   bool get isBreak => _isBreak;
   bool get isGreen => _isGreen;
+  bool get isLightMode => _isLightMode;
 
 
   void changeToBreak(){
@@ -25,6 +27,14 @@ class AnimationMainScreen extends ChangeNotifier{
     _isGreen = true;
 
     notifyListeners();
+  }
+  void changeToBlackMode(){
+    _isLightMode = false;
+
+  }
+  void changeToLigthMode(){
+    _isLightMode = true;
+
   }
 
 }
